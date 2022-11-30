@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
     "start:dev": "nodemon -e * --watch . --exec \"npm start\"",
-    "build": "npx electron-packager . xyzaei --platform=win32 --x64"
+    "build": "npx electron-packager . xyzaei --platform=win32 --x64 && copy games.json xyzaei-win32-x64 && copy movies.json xyzaei-win32-x64"
   },
   "author": "Johnson Zhu",
   "license": "ISC",
