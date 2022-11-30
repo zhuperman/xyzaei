@@ -120,6 +120,10 @@ async function init() {
     cover.style.backgroundSize = ultrawide ? 'cover' : 'contain';
   });
 
+  logos.forEach(logo => {
+    logo.style.left = `${itemWidth * 0.125}px`;
+  });
+
   document.body.style.height = `${sliderWidth - (window.innerWidth - window.innerHeight) + remainingWidth}px`;
 }
 
