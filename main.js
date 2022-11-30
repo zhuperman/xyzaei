@@ -35,12 +35,12 @@ app.on('window-all-closed', () => {
   }
 });
 
-ipcMain.handle('getItems', (_, type) => {
+ipcMain.handle('fetch', (_, type) => {
   let data = JSON.parse(fs.readFileSync(`./${type}.json`));
   return data;
 });
 
-ipcMain.handle('launchItem', (_, type, target) => {
+ipcMain.handle('run', (_, type, target) => {
   let vlc = "C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe";
   let cmd = `start "" ${type == "movies" ? '"' + vlc + '"' : ""} "${target}"`;
   child(cmd, function(err, _) {
@@ -50,4 +50,8 @@ ipcMain.handle('launchItem', (_, type, target) => {
       app.quit();
     }
   });
+});
+
+ipcMain.handle('exit', () => {
+  app.quit();
 });

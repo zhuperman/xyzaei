@@ -17,6 +17,9 @@ let sortAttribute = RELEASE_DATE;
 let sortDirection = -1;
 
 document.addEventListener('keydown', async function(event){
+  if (event.keyCode == 27) {
+    window.launcher.exit();
+  }
   if (event.keyCode == 112) {
     itemType = (itemType == GAME ? MOVIE : GAME);
     await init();
@@ -121,7 +124,7 @@ async function init() {
 }
 
 function launchItem(event) {
-  window.launcher.launch(itemType, event.target.parentElement.dataset.target);
+  window.launcher.run(itemType, event.target.parentElement.dataset.target);
 }
 
 function lerp(start, end, t) {

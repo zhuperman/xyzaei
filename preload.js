@@ -1,9 +1,10 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('items', {
-  fetch: (type) => ipcRenderer.invoke('getItems', type)
+  fetch: (type) => ipcRenderer.invoke('fetch', type)
 });
 
 contextBridge.exposeInMainWorld('launcher', {
-  launch: (type, target) => ipcRenderer.invoke('launchItem', type, target)
+  run: (type, target) => ipcRenderer.invoke('run', type, target),
+  exit: () => ipcRenderer.invoke("exit")
 });
