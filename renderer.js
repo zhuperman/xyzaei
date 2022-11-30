@@ -111,7 +111,7 @@ async function init() {
   covers.forEach((cover, idx) => {
     cover.style.width = coverWidth;
     if (itemType == GAME) {
-      cover.style.left = `-${(itemWidth + itemBufferWidth) * idx + (window.outerHeight * 16 / 9 - window.outerHeight * mainAspectRatio) / 2 + (ultrawide ? ultrawideBuffer / 2 : 0)}px`;
+      cover.style.left = `-${(itemWidth + itemBufferWidth) * (idx + (idx == 0 && !ultrawide ? 1 : 0)) + (window.outerHeight * 16 / 9 - window.outerHeight * mainAspectRatio) / 2 + (ultrawide ? ultrawideBuffer / 2 : 0)}px`;
     }
     if (itemType == MOVIE && itemsPerPage == 1) { cover.style.opacity = 0.8; }
     cover.style.backgroundSize = ultrawide ? 'cover' : 'contain';
