@@ -10,9 +10,21 @@ let sliderInner = document.querySelector('.slider-inner');
 const GAME = "games";
 const MOVIE = "movies";
 let itemType = GAME;
+
+const RELEASE_DATE = "date";
+const TITLE = "cover";
+let sortAttribute = RELEASE_DATE;
+let sortDirection = -1;
+
 document.addEventListener('keydown', async function(event){
-  if (event.keyCode == 9) {
+  if (event.keyCode == 112) {
     itemType = (itemType == GAME ? MOVIE : GAME);
+    await init();
+  }
+  if (event.keyCode == 113) {
+    sortAttribute = sortAttribute == RELEASE_DATE ? TITLE : RELEASE_DATE;
+    sortDirection = sortAttribute == RELEASE_DATE ? -1 : 1;
+    console.log(sortAttribute, sortDirection);
     await init();
   }
 });
@@ -37,7 +49,7 @@ let ultrawideBuffer = 60;
 async function loadItems() {
   let jsonData = await window.items.fetch(itemType);
 
-  return jsonData.map(itemData => {
+  return jsonData.sort((a, b) => { return sortDirection * a[sortAttribute].localeCompare(b[sortAttribute]); }).map(itemData => {
     let item = document.createElement("div");
     item.className = `item ${itemType}`;
     item.style.width = `${itemWidth}px`;
