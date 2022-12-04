@@ -37,6 +37,8 @@ document.addEventListener('keydown', async function(event){
       if (itemsPerPage > 1) { highlightCurrentItem(prevItemId); }
     }
     if (currentItemId > 0) { window.dispatchEvent(new WheelEvent('wheel', {'deltaY': 1})); }
+  } else if (event.keyCode == 13) {
+    launchItem();
   }
 
   // Item Type
@@ -181,7 +183,15 @@ function highlightCurrentItem(prevItemId) {
 }
 
 function launchItem(event) {
-  window.launcher.run(itemType, event.target.parentElement.dataset.target);
+  let path;
+  if (event) {
+    path = event.target.parentElement.dataset.target;
+  } else {
+    let currentItem = document.getElementById(currentItemId.toString());
+    path = currentItem.dataset.target;
+  }
+
+  window.launcher.run(itemType, path);
 }
 
 function lerp(start, end, t) {
@@ -220,3 +230,8 @@ await init();
 animate();
 window.addEventListener('resize', init);
 window.addEventListener('wheel', scaleScrolling);
+window.addEventListener("gamepadconnected", (e) => {
+  console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+    e.gamepad.index, e.gamepad.id,
+    e.gamepad.buttons.length, e.gamepad.axes.length);
+});
