@@ -54,20 +54,11 @@ main{
   cursor: pointer;
 }
 
-.item:hover .cover{
-  opacity: 0.8;
-}
-
-.item:hover .logo{
-  opacity: 0.9;
-}
-
 .cover{
   position: absolute;
   height: 100%;  
   background-repeat: no-repeat;
   background-position: left;
-  opacity: 0.4;
 }
 
 .logo{
@@ -78,5 +69,4 @@ main{
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  opacity: 0.45;
 }
