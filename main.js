@@ -36,7 +36,7 @@ app.on('window-all-closed', () => {
 });
 
 ipcMain.handle('fetch', (_, type) => {
-  let data = JSON.parse(fs.readFileSync(`./${type}.json`));
+  let data = JSON.parse(fs.readFileSync(`D:\\Documents\\xyzaei\\${type}.json`));
   return data;
 });
 
