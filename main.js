@@ -42,7 +42,7 @@ ipcMain.handle('fetch', (_, type) => {
 
 ipcMain.handle('run', (_, type, target) => {
   let vlc = "C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe";
-  let cmd = `start "" ${type == "movies" ? '"' + vlc + '"' : ""} "${target}"`;
+  let cmd = `start "" ${type == "movies" ? '"' + vlc + '"' : ""} "${target}" ${type == "movies" ? "--fullscreen" : ""}`;
   child(cmd, function(err, _) {
     if (err) {
       console.log(err);
