@@ -228,10 +228,96 @@ function scaleScrolling(event) {
 
 await init();
 animate();
+
 window.addEventListener('resize', init);
 window.addEventListener('wheel', scaleScrolling);
 window.addEventListener("gamepadconnected", (e) => {
-  console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
-    e.gamepad.index, e.gamepad.id,
-    e.gamepad.buttons.length, e.gamepad.axes.length);
+  let prevButtonValues = {};
+
+  async function gamepadListener() {
+    const gp = navigator.getGamepads()[0];
+  
+    if (prevButtonValues[0] < 1 && gp.buttons[0].value == 1) {
+      // console.log("A");
+      launchItem();
+    } else if (prevButtonValues[1] < 1 && gp.buttons[1].value == 1) {
+      // console.log("B");
+      window.launcher.exit();
+    } else if (prevButtonValues[2] < 1 && gp.buttons[2].value == 1) {
+      // console.log("X");
+      sortAttribute = sortAttribute == RELEASE_DATE ? TITLE : RELEASE_DATE;
+      sortDirection = sortAttribute == RELEASE_DATE ? -1 : 1;
+      await init();
+    } else if (prevButtonValues[3] < 1 && gp.buttons[3].value == 1) {
+      // console.log("Y");
+      itemType = (itemType == GAME ? MOVIE : GAME);
+      await init();
+    }
+
+    if (prevButtonValues[4] < 1 && gp.buttons[4].value == 1) {
+      // console.log("LB");
+    } else if (prevButtonValues[5] < 1 && gp.buttons[5].value == 1) {
+      // console.log("RB");
+    } else if (prevButtonValues[6] < 1 && gp.buttons[6].value == 1) {
+      // console.log("LT");
+    } else if (prevButtonValues[7] < 1 && gp.buttons[7].value == 1) {
+      // console.log("RT");
+    }
+
+    if (prevButtonValues[8] < 1 && gp.buttons[8].value == 1) {
+      // console.log("View");
+    } else if (prevButtonValues[9] < 1 && gp.buttons[9].value == 1) {
+      // console.log("Menu");
+    }
+
+    if (prevButtonValues[10] < 1 && gp.buttons[10].value == 1) {
+      // console.log("LS");
+    } else if (prevButtonValues[11] < 1 && gp.buttons[11].value == 1) {
+      // console.log("RS");
+    }
+
+    if (prevButtonValues[12] < 1 && gp.buttons[12].value == 1) {
+      // console.log("Up");
+    } else if (prevButtonValues[13] < 1 && gp.buttons[13].value == 1) {
+      // console.log("Down");
+    } else if (prevButtonValues[14] < 1 && gp.buttons[14].value == 1) {
+      // console.log("Left");
+      if (currentItemId > 0) {
+        let prevItemId = currentItemId;
+        currentItemId -= 1;
+        if (itemsPerPage > 1) { highlightCurrentItem(prevItemId); }
+      }
+      if (currentItemId < items.length - 1) { window.dispatchEvent(new WheelEvent('wheel', {'deltaY': -1})); }
+    } else if (prevButtonValues[15] < 1 && gp.buttons[15].value == 1) {
+      // console.log("Right");
+      if (currentItemId < items.length - 1) {
+        let prevItemId = currentItemId;
+        currentItemId += 1;
+        if (itemsPerPage > 1) { highlightCurrentItem(prevItemId); }
+      }
+      if (currentItemId > 0) { window.dispatchEvent(new WheelEvent('wheel', {'deltaY': 1})); }
+    }
+
+    prevButtonValues[0] = gp.buttons[0].value;
+    prevButtonValues[1] = gp.buttons[1].value;
+    prevButtonValues[2] = gp.buttons[2].value;
+    prevButtonValues[3] = gp.buttons[3].value;
+    prevButtonValues[4] = gp.buttons[4].value;
+    prevButtonValues[5] = gp.buttons[5].value;
+    prevButtonValues[6] = gp.buttons[6].value;
+    prevButtonValues[7] = gp.buttons[7].value;
+    prevButtonValues[8] = gp.buttons[8].value;
+    prevButtonValues[9] = gp.buttons[9].value;
+    prevButtonValues[10] = gp.buttons[10].value;
+    prevButtonValues[11] = gp.buttons[11].value;
+    prevButtonValues[12] = gp.buttons[12].value;
+    prevButtonValues[13] = gp.buttons[13].value;
+    prevButtonValues[14] = gp.buttons[14].value;
+    prevButtonValues[15] = gp.buttons[15].value;
+
+   requestAnimationFrame(gamepadListener);
+  }
+  
+  gamepadListener();
 });
+
