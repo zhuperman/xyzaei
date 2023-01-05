@@ -12,7 +12,7 @@ const MOVIE = "movies";
 let itemType = GAME;
 
 const RELEASE_DATE = "date";
-const TITLE = "cover";
+const CUSTOM = "custom";
 let sortAttribute = RELEASE_DATE;
 let sortDirection = -1;
 
@@ -44,11 +44,12 @@ document.addEventListener('keydown', async function(event){
   // Item Type
   if (event.keyCode == 112) {
     itemType = (itemType == GAME ? MOVIE : GAME);
+    parallaxScrolling = !parallaxScrolling;
     await init();
   }
   // Sort Type
   if (event.keyCode == 113) {
-    sortAttribute = sortAttribute == RELEASE_DATE ? TITLE : RELEASE_DATE;
+    sortAttribute = sortAttribute == RELEASE_DATE ? CUSTOM : RELEASE_DATE;
     sortDirection = sortAttribute == RELEASE_DATE ? -1 : 1;
     await init();
   }
@@ -58,40 +59,41 @@ let itemWidth;
 let itemBufferWidth;
 let itemsPerPage;
 
-let coverWidth;
+let backgroundWidth;
 
 let current;
 let target;
 let ease;
 
 let items;
-let covers;
+let backgrounds;
 let logos;
 
+let parallaxScrolling = true;
 let ultrawide = false;
 let ultrawideBuffer = 60;
 
-const COVER_OPACITY = 0.8;
+const BACKGROUND_OPACITY = 0.8;
 const LOGO_OPACITY = 0.9;
 let currentItemId;
 
 async function loadItems() {
   let jsonData = await window.items.fetch(itemType);
-
-  return jsonData.sort((a, b) => { return sortDirection * a[sortAttribute].localeCompare(b[sortAttribute]); }).map((itemData, index) => {
+  if (sortAttribute == RELEASE_DATE) { jsonData = jsonData.sort((a, b) => { return sortDirection * a[sortAttribute].localeCompare(b[sortAttribute]); }); }
+  items = jsonData.map((itemData, index) => {
     let item = document.createElement("div");
     item.className = `item ${itemType}`;
     item.id = index;
     item.style.width = `${itemWidth}px`;
     item.dataset.target = itemData.target;
 
-    let cover = document.createElement("div");
-    cover.className = `cover ${itemType}`;
-    cover.style.backgroundImage = `url("${itemData.cover.replace(/\\/g, "/")}")`;
-    cover.style.opacity = COVER_OPACITY / 2;
-    item.appendChild(cover);
+    let background = document.createElement("div");
+    background.className = `background ${itemType}`;
+    background.style.backgroundImage = `url("${(parallaxScrolling ? itemData.background : itemData.cover).replace(/\\/g, "/")}")`;
+    background.style.opacity = BACKGROUND_OPACITY / 2;
+    item.appendChild(background);
 
-    if (itemData.logo) {
+    if (parallaxScrolling && itemData.logo) {
       let logo = document.createElement("div");
       logo.className = `logo ${itemType}`;
       logo.style.backgroundImage = `url("${itemData.logo.replace(/\\/g, "/")}")`;
@@ -114,24 +116,24 @@ async function init() {
   ease = 0.05;
   sliderInner.innerHTML = "";
 
-  if (itemType == GAME) {
+  if (parallaxScrolling) {
     itemsPerPage = ultrawide ? 5 : 3;
     itemBufferWidth = 20;
     mainAspectRatio = 16/9;
     itemWidth = (window.outerHeight * mainAspectRatio) / itemsPerPage - itemsPerPage * itemBufferWidth;
-    coverWidth = '100vw';
+    backgroundWidth = '100vw';
     mainWidth = (itemWidth + itemBufferWidth) * itemsPerPage;
-  } else if (itemType == MOVIE) {
-    itemsPerPage = ultrawide ? 4 : 1;
+  } else {
+    itemsPerPage = ultrawide ? 4 : 3;
     itemBufferWidth = 20;
     mainAspectRatio = 16/9;
     itemWidth = window.outerHeight * 0.95 * 2 / 3;
-    coverWidth = `${itemWidth}px`;
+    backgroundWidth = `${itemWidth}px`;
     mainWidth = (itemWidth + itemBufferWidth) * itemsPerPage;
   }
 
-  items = await loadItems();
-  covers = [...document.querySelectorAll('.cover')];
+  await loadItems();
+  backgrounds = [...document.querySelectorAll('.background')];
   logos = [...document.querySelectorAll('.logo')];
 
   sliderWidth = (itemWidth + itemBufferWidth) * items.length;
@@ -144,13 +146,13 @@ async function init() {
   if (ultrawide) { remainingWidth = ultrawideBuffer; }
   main.style.left = `${(remainingWidth) / 2}px`;
 
-  covers.forEach((cover, idx) => {
-    cover.style.width = coverWidth;
-    if (itemType == GAME) {
-      cover.style.left = `-${(itemWidth + itemBufferWidth) * (idx + (idx == 0 && !ultrawide ? 1 : 0)) + (window.outerHeight * 16 / 9 - window.outerHeight * mainAspectRatio) / 2 + (ultrawide ? ultrawideBuffer / 2 : 0)}px`;
+  backgrounds.forEach((background, idx) => {
+    background.style.width = backgroundWidth;
+    if (parallaxScrolling) {
+      background.style.left = `-${(itemWidth + itemBufferWidth) * (idx + (idx == 0 && !ultrawide ? 1 : 0)) + (window.outerHeight * 16 / 9 - window.outerHeight * mainAspectRatio) / 2 + (ultrawide ? ultrawideBuffer / 2 : 0)}px`;
     }
-    if (itemType == MOVIE && itemsPerPage == 1) { cover.style.opacity = COVER_OPACITY; }
-    cover.style.backgroundSize = ultrawide ? 'cover' : 'contain';
+    if (itemsPerPage == 1) { background.style.opacity = BACKGROUND_OPACITY; }
+    background.style.backgroundSize = ultrawide ? 'background' : 'contain';
   });
 
   logos.forEach(logo => {
@@ -172,12 +174,12 @@ function updateCurrentItem(event) {
 function highlightCurrentItem(prevItemId) {
   let prevItem = document.getElementById(prevItemId.toString());
   for (let child of prevItem.children) {
-    if (child.classList.contains('cover')) { child.style.opacity = COVER_OPACITY / 2; }
+    if (child.classList.contains('background')) { child.style.opacity = BACKGROUND_OPACITY / 2; }
     if (child.classList.contains('logo')) { child.style.opacity = LOGO_OPACITY / 2; }
   }
   let currentItem = document.getElementById(currentItemId.toString());
   for (let child of currentItem.children) {
-    if (child.classList.contains('cover')) { child.style.opacity = COVER_OPACITY; }
+    if (child.classList.contains('background')) { child.style.opacity = BACKGROUND_OPACITY; }
     if (child.classList.contains('logo')) { child.style.opacity = LOGO_OPACITY; }
   }
 }
@@ -206,13 +208,13 @@ function animate() {
   current = parseFloat(lerp(current, target, ease)).toFixed(2);
   target = window.scrollY;
   setTransform(slider, `translateX(-${current}px)`);
-  if (itemType == GAME) animateCovers(current);
+  if (parallaxScrolling) animatebackgrounds(current);
   requestAnimationFrame(animate);
 }
 
-function animateCovers(current) {
-  covers.forEach(cover => {
-    setTransform(cover, `translateX(${current}px)`);
+function animatebackgrounds(current) {
+  backgrounds.forEach(background => {
+    setTransform(background, `translateX(${current}px)`);
   });
 }
 
@@ -245,12 +247,13 @@ window.addEventListener("gamepadconnected", (e) => {
       window.launcher.exit();
     } else if (prevButtonValues[2] < 1 && gp.buttons[2].value == 1) {
       // console.log("X");
-      sortAttribute = sortAttribute == RELEASE_DATE ? TITLE : RELEASE_DATE;
+      sortAttribute = sortAttribute == RELEASE_DATE ? CUSTOM : RELEASE_DATE;
       sortDirection = sortAttribute == RELEASE_DATE ? -1 : 1;
       await init();
     } else if (prevButtonValues[3] < 1 && gp.buttons[3].value == 1) {
       // console.log("Y");
       itemType = (itemType == GAME ? MOVIE : GAME);
+      parallaxScrolling = !parallaxScrolling;
       await init();
     }
 
