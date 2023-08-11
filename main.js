@@ -42,8 +42,20 @@ ipcMain.handle('fetch', (_, type) => {
 });
 
 ipcMain.handle('run', (_, type, target) => {
-  let vlc = "C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe";
-  let cmd = `start "" ${type == "movies" ? '"' + vlc + '"' : ""} "${target}" ${type == "movies" ? "--fullscreen" : ""}`;
+  let args = [];
+  if (type === "movies") {
+    executable = "C:\\Program Files\\MPC-HC\\mpc-hc64.exe";
+    args.push(target);
+    args.push("/fullscreen");
+  } else {
+    executable = target;
+  }
+  const escapedString = str => `\"${str}\"`;
+  let argumentList = args.length ? `-ArgumentList ${args.map(escapedString).join(',')}` : "";
+
+  let powershell_cmd = `Start-Process \\\"${executable}\\\" ${argumentList}`;
+  let cmd = `powershell -command "${powershell_cmd}"`
+
   child(cmd, function(err, _) {
     if (err) {
       console.log(err);

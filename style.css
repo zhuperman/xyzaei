@@ -17,14 +17,14 @@
 
 body{
   overscroll-behavior: none;
-  background-color: #101010;
+  background-color: #080808;
 }
 
 main{
   position: fixed;
   top: 2.5vh;  
   height: 100%;
-  background-color: #101010;
+  background-color: #080808;
   overflow: hidden;
 }
 

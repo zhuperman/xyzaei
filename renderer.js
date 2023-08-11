@@ -44,13 +44,17 @@ document.addEventListener('keydown', async function(event){
   // Item Type
   if (event.keyCode == 112) {
     itemType = (itemType == GAME ? MOVIE : GAME);
-    parallaxScrolling = !parallaxScrolling;
     await init();
   }
   // Sort Type
   if (event.keyCode == 113) {
     sortAttribute = sortAttribute == RELEASE_DATE ? CUSTOM : RELEASE_DATE;
     sortDirection = sortAttribute == RELEASE_DATE ? -1 : 1;
+    await init();
+  }
+  // Parallax Scrolling
+  if (event.keyCode == 114) {
+    parallaxScrolling = !parallaxScrolling;
     await init();
   }
 });
@@ -89,7 +93,7 @@ async function loadItems() {
 
     let background = document.createElement("div");
     background.className = `background ${itemType}`;
-    background.style.backgroundImage = `url("${(parallaxScrolling ? itemData.background : itemData.cover).replace(/\\/g, "/")}")`;
+    background.style.backgroundImage = `url("${(parallaxScrolling ? itemData.background : itemData.poster).replace(/\\/g, "/")}")`;
     background.style.opacity = BACKGROUND_OPACITY / 2;
     item.appendChild(background);
 
@@ -253,7 +257,6 @@ window.addEventListener("gamepadconnected", (e) => {
     } else if (prevButtonValues[3] < 1 && gp.buttons[3].value == 1) {
       // console.log("Y");
       itemType = (itemType == GAME ? MOVIE : GAME);
-      parallaxScrolling = !parallaxScrolling;
       await init();
     }
 
