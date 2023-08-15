@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Sample Movie 1",
+    "date": "2021-01-01",
+    "target": "D:\\Movies\\Sample Movie 1\\movie.mkv",
+    "background": "D:\\Movies\\Sample Movie 1\\background.jpg",
+    "logo": "D:\\Movies\\Sample Movie 1\\logo.png"
+  },
+  {
+    "title": "Sample Movie 2",
+    "date": "2022-01-01",
+    "target": "D:\\Movies\\Sample Movie 2\\movie.mkv",
+    "background": "D:\\Movies\\Sample Movie 2\\background.jpg",
+    "logo": "D:\\Movies\\Sample Movie 2\\logo.png"
+  },
+  {
+    "title": "Sample Movie 3",
+    "date": "2023-01-01",
+    "target": "D:\\Movies\\Sample Movie 3\\movie.mkv",
+    "background": "D:\\Movies\\Sample Movie 3\\background.jpg",
+    "logo": "D:\\Movies\\Sample Movie 3\\logo.png"
+  }
+]

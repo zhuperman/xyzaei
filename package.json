@@ -2,20 +2,21 @@
   "name": "xyzaei",
   "version": "1.0.0",
   "description": "",
-  "icon": "icon.ico",
-  "main": "main.js",
+  "icon": "resources/xyzaei.ico",
+  "main": "src/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron .",
+    "start": "electron src/main.js",
     "start:dev": "nodemon -e * --watch . --exec \"npm start\"",
-    "build": "npx electron-packager . xyzaei --out=dist --overwrite --platform=win32 --x64 --icon=./icon.ico && npm run init:games && npm run init:movies",
-    "init:games": "copy games.json .\\dist\\xyzaei-win32-x64",
-    "init:movies": "copy movies.json .\\dist\\xyzaei-win32-x64"
+    "build": "npx electron-packager . xyzaei --out=dist --overwrite --platform=win32 --arch=x64 --icon=resources/icons/xyzaei.ico && npm run init:data",
+    "init:data": "mkdir .\\dist\\xyzaei-win32-x64\\data && npm run init:games && npm run init:movies",
+    "init:games": "copy data\\games.json .\\dist\\xyzaei-win32-x64\\data",
+    "init:movies": "copy data\\movies.json .\\dist\\xyzaei-win32-x64\\data"
   },
   "author": "Johnson Zhu",
   "license": "ISC",
   "dependencies": {
-    "electron": "^21.3.1",
+    "electron": "^26.0.0",
     "electron-packager": "^17.1.1"
   }
 }

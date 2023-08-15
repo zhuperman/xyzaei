@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Sample Game 1",
+    "date": "2021-01-01",
+    "target": "D:\\Games\\Sample Game 1\\game.exe",
+    "background": "D:\\Games\\Sample Game 1\\background.jpg",
+    "logo": "D:\\Games\\Sample Game 1\\logo.png"
+  },
+  {
+    "title": "Sample Game 2",
+    "date": "2022-01-01",
+    "target": "D:\\Games\\Sample Game 2\\game.exe",
+    "background": "D:\\Games\\Sample Game 2\\background.jpg",
+    "logo": "D:\\Games\\Sample Game 2\\logo.png"
+  },
+  {
+    "title": "Sample Game 3",
+    "date": "2023-01-01",
+    "target": "D:\\Games\\Sample Game 3\\game.exe",
+    "background": "D:\\Games\\Sample Game 3\\background.jpg",
+    "logo": "D:\\Games\\Sample Game 3\\logo.png"
+  }
+]
