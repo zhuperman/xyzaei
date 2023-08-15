@@ -16,6 +16,7 @@
   "author": "Johnson Zhu",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.3.1",
     "electron": "^26.0.0",
     "electron-packager": "^17.1.1"
   }

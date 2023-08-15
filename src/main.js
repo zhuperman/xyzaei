@@ -1,7 +1,10 @@
 const { app, BrowserWindow, ipcMain, screen } = require('electron');
 const path = require('path');
-let fs = require('fs');
-let child = require('child_process').exec;
+const fs = require('fs');
+const childProcess = require('child_process').exec;
+const dotenv = require('dotenv');
+
+dotenv.config({ path: './config/.env' });
 
 const createWindow = () => {
   const {width, height} = screen.getPrimaryDisplay().workAreaSize;
@@ -57,7 +60,7 @@ ipcMain.handle('run', (_, type, target) => {
   let powershell_cmd = `Start-Process \\\"${executable}\\\" ${argumentList}`;
   let cmd = `powershell -command "${powershell_cmd}"`
 
-  child(cmd, function(err, _) {
+  childProcess(cmd, function(err, _) {
     if (err) {
       console.log(err);
     } else {
