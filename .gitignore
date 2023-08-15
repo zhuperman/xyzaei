@@ -1,2 +1,4 @@
 node_modules/
 xyzaei-win32-x64/
+data/games.json
+data/movies.json
