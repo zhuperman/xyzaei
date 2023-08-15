@@ -8,10 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron src/main.js",
     "start:dev": "nodemon -e * --watch . --exec \"npm start\"",
-    "build": "npx electron-packager . xyzaei --out=dist --overwrite --platform=win32 --arch=x64 --icon=resources/icons/xyzaei.ico && npm run init:data",
-    "init:data": "mkdir .\\dist\\xyzaei-win32-x64\\data && npm run init:games && npm run init:movies",
-    "init:games": "copy data\\games.json .\\dist\\xyzaei-win32-x64\\data",
-    "init:movies": "copy data\\movies.json .\\dist\\xyzaei-win32-x64\\data"
+    "build": "npx electron-packager . xyzaei --out=dist --overwrite --platform=win32 --arch=x64 --icon=resources/icons/xyzaei.ico"
   },
   "author": "Johnson Zhu",
   "license": "ISC",
