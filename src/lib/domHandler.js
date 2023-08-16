@@ -12,7 +12,8 @@ class DomHandler {
     await this.initItems();
     await this.initSlider();
 
-    this.window.scrollY = 0;
+    this.window.scrollHandler.init();
+    this.window.highlightHandler.init();
     this.window.highlightHandler.switchHighlightedItem((Math.floor(this.window.itemsPerPage / 2)).toString());
   }
 
@@ -29,7 +30,7 @@ class DomHandler {
     this.window.itemWidth = this.window.mainWidth / this.window.itemsPerPage;
 
     this.window.mainElement.style.height = `${this.window.mainHeight}px`;
-    this.window.mainElement.style.width = `${this.window.mainWidth}px`;
+    this.window.mainElement.style.width = `${this.window.mainWidth - this.window.itemBufferWidth}px`;
     this.window.mainElement.style.top = `${this.window.mainTop}px`;
     this.window.mainElement.style.left = `${this.window.mainLeft + this.window.itemBufferWidth / 2}px`;
   }

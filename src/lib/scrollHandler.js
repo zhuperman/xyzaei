@@ -3,10 +3,15 @@ class ScrollHandler {
     this.window = window;
     this.window.addEventListener('wheel', this.scaleAndBoundScrolling.bind(this));
     this.lerpRatio = 0.05;
+    this.init();    
+    this.animateSliderScrolling();
+  }
+
+  init() {
+    this.window.scrollY = 0;
     this.currScrollY = 0;
     this.targetScrollY = 0;
     this.isScrolling = false;
-    this.animateSliderScrolling();
   }
 
   scaleAndBoundScrolling(event) {

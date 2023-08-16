@@ -1,9 +1,13 @@
 class HighlightHandler {
   constructor(window) {
     this.window = window;
-    this.highlightedItemId = null;
     this.backgroundHighlightOpacity = 0.8;
     this.logoHighlightOpacity = 0.9;
+    this.init();
+  }
+
+  init() {
+    this.highlightedItemId = null;
   }
 
   switchHighlightedItem(itemId) {
