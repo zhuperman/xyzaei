@@ -38,6 +38,7 @@ class DomHandler {
   async initItems() {
     let items = await this.window.itemHandler.loadItems();
 
+    this.window.itemCount = items.length;
     this.window.itemElements = [];
     items.forEach((item, idx) => {
       item.id = idx;
@@ -93,7 +94,7 @@ class DomHandler {
     backgroundElement.style.backgroundImage = this.getBackgroundImageUrlForPath(item.background);
     backgroundElement.style.opacity = this.window.highlightHandler.backgroundHighlightOpacity / 2;
     backgroundElement.style.width = `${this.window.mainWidth}px`;
-    let leftBuffer = (parseInt(item.id) / this.window.mainAspectRatio) + (this.window.itemBufferWidth / 2);
+    let leftBuffer = (parseInt(item.id) / this.window.itemCount * this.window.itemBufferWidth) + (this.window.itemBufferWidth / 2);
     if (item.id === 0 && this.window.itemsPerPage > 1) {
       leftBuffer += this.window.itemWidth;
     }
