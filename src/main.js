@@ -4,7 +4,7 @@ const fs = require('fs');
 const childProcess = require('child_process').exec;
 const dotenv = require('dotenv');
 
-dotenv.config({ path: './config/.env' });
+dotenv.config({ path: path.join(__dirname, "..", "config", ".env") });
 
 const createWindow = () => {
   const {width, height} = screen.getPrimaryDisplay().workAreaSize;
