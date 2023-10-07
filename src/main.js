@@ -46,19 +46,25 @@ ipcMain.handle('fetch', (_, type) => {
 });
 
 ipcMain.handle('run', (_, type, target) => {
+  const escapedString = str => `'${str}'`;
+  const escapedFilePath = str => `\\\"${str}\\\"`;
+
   let args = [];
   if (type === "movies") {
     executable = process.env.VIDEO_PLAYER_PATH;
-    args.push(target);
+    args.push(escapedFilePath(target));
     args.push("/fullscreen");
   } else {
     executable = target;
   }
-  const escapedString = str => `\"${str}\"`;
-  let argumentList = args.length ? `-ArgumentList ${args.map(escapedString).join(',')}` : "";
+  args = args.map(escapedString);
 
-  let powershell_cmd = `Start-Process \\\"${executable}\\\" ${argumentList}`;
-  let cmd = `powershell -command "${powershell_cmd}"`
+  let directory = executable.split("\\").slice(0, -1).join("\\");
+  let workingDirectory = directory ? `-WorkingDirectory ${escapedFilePath(directory)}` : "";
+  let filePath = executable ? `-FilePath ${escapedFilePath(executable)}` : "";
+  let argumentList = args.length ? `-ArgumentList ${args.join(',')}` : "";
+  let powershell_cmd = `Start-Process ${workingDirectory} ${filePath} ${argumentList}`;
+  let cmd = `powershell -command "${powershell_cmd}"`;
 
   childProcess(cmd, function(err, _) {
     if (err) {
